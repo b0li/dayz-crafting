@@ -45,6 +45,7 @@
 			min-height: 100%;
 			min-height: 100dvh;
 			-webkit-font-smoothing: antialiased;
+			overscroll-behavior: none;
 		}
 
 		body {
@@ -57,6 +58,21 @@
 		.app {
 			max-width: 1400px;
 			margin: 0 auto;
+		}
+
+		/* Install banner */
+
+		.install-banner {
+			display: none;
+			margin: 12px var( --pad ) 0;
+			padding: 12px 16px;
+			background: rgba( 174, 184, 154, 0.1 );
+			border: 1px solid rgba( 174, 184, 154, 0.25 );
+			border-radius: 6px;
+			font-size: 13px;
+			line-height: 1.5;
+			text-align: center;
+			color: var( --accent );
 		}
 
 		/* Header */
@@ -337,6 +353,10 @@
 </head>
 <body>
 
+<div id="installBanner" class="install-banner">
+	Tip: Share → "Add to Home Screen" for app feel + offline use
+</div>
+
 <div class="app">
 
 	<header class="app__header">
@@ -390,6 +410,32 @@
 	</div><!-- end /.list -->
 
 </div><!-- end /.app -->
+
+<script>
+
+	// Service Worker registration
+	if ( 'serviceWorker' in navigator ) {
+
+		navigator.serviceWorker.register( './sw.js' ).then( ( reg ) => {
+			reg.update();
+		}).catch( ( err ) => {
+			console.log( 'SW registration failed:', err );
+		});
+
+	}
+
+	// Show install hint on iOS Safari (not in standalone mode)
+	if (
+		( 'standalone' in navigator && ! navigator.standalone ) &&
+		/iPhone|iPad/.test( navigator.userAgent )
+	) {
+
+		const banner = document.getElementById( 'installBanner' );
+		if ( banner ) banner.style.display = 'block';
+
+	}
+
+</script>
 
 <script>
 
