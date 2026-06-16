@@ -209,7 +209,8 @@
 		}
 
 		.chips__btn:hover {
-			color: var( --text );
+			color: #14150f;
+			background: var( --accent );
 			border-color: var( --accent );
 		}
 
@@ -356,12 +357,16 @@
 				grid-template-columns: 1fr;
 			}
 
+			/* Horizontal swipe instead of wrapping – keeps the sticky filter flat */
 			.chips {
 				flex-wrap: nowrap;
+				gap: 8px;
 				overflow-x: auto;
+				scroll-snap-type: x proximity;
 				-webkit-overflow-scrolling: touch;
 				scrollbar-width: none;
-				padding-bottom: 2px;
+				margin: 12px 0 0;
+				padding: 0 0 2px;
 			}
 
 			.chips::-webkit-scrollbar {
@@ -370,6 +375,7 @@
 
 			.chips__btn {
 				flex-shrink: 0;
+				scroll-snap-align: start;
 			}
 
 		}
