@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="theme-color" content="#14150f">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="description" content="DayZ Crafting Guide – All recipes at a glance">
+	<link rel="manifest" href="manifest.json">
+	<link rel="apple-touch-icon" href="icon-192.png">
+	<title>DayZ Crafting Guide</title>
+
+	<style>
+
+		:root {
+			--bg:        #14150f;
+			--bg-panel:  rgba( 20, 22, 18, 0.82 );
+			--bg-row:    rgba( 28, 31, 26, 0.55 );
+			--line:      rgba( 120, 130, 110, 0.18 );
+			--text:      #d6d8cf;
+			--text-dim:  #8b9082;
+			--text-head: #e8eae2;
+			--energy:    #d9a441;
+			--water:     #5aa9d6;
+			--danger:    #c8503c;
+			--accent:    #aeb89a;
+			--pad:        32px;
+		}
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+		html, body {
+			background: var( --bg );
+			color: var( --text );
+			font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+			font-size: 16px;
+			line-height: 1.4;
+			min-height: 100%;
+			min-height: 100dvh;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		body {
+			background-image:
+				linear-gradient( rgba( 16, 17, 13, 0.85 ), rgba( 16, 17, 13, 0.93 ) ),
+				radial-gradient( circle at 30% 0%, #2c3327 0%, #14150f 60% );
+			background-attachment: fixed;
+		}
+
+		.app {
+			max-width: 1400px;
+			margin: 0 auto;
+		}
+
+		/* Header */
+
+		.app__header {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 16px;
+			padding: 20px var( --pad ) 16px;
+		}
+
+		.logo {
+			display: block;
+			width: 110px;
+			height: auto;
+		}
+
+		.app__sub {
+			margin-top: 6px;
+			font-size: 11px;
+			letter-spacing: 1px;
+			color: var( --text-dim );
+			text-transform: uppercase;
+		}
+
+		/* Language switch */
+
+		.lang {
+			display: flex;
+			flex-shrink: 0;
+			gap: 2px;
+			padding: 3px;
+			background: rgba( 10, 11, 8, 0.6 );
+			border: 1px solid var( --line );
+			border-radius: 7px;
+		}
+
+		.lang__btn {
+			padding: 6px 11px;
+			background: transparent;
+			border: none;
+			border-radius: 5px;
+			color: var( --text-dim );
+			font-family: inherit;
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0.5px;
+			cursor: pointer;
+			transition: color 0.15s, background 0.15s;
+		}
+
+		.lang__btn--active {
+			color: #14150f;
+			background: var( --accent );
+		}
+
+		/* Controls */
+
+		.controls {
+			padding: 0 var( --pad ) 14px;
+			position: sticky;
+			top: 0;
+			z-index: 100;
+		}
+
+		.controls__card {
+			padding: 14px 16px;
+			background: var( --bg-panel );
+			backdrop-filter: blur( 6px );
+			border: 1px solid var( --line );
+			border-radius: 6px;
+		}
+
+		.controls__top {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.search {
+			flex: 1;
+			padding: 10px 14px;
+			background: rgba( 10, 11, 8, 0.7 );
+			border: 1px solid var( --line );
+			border-radius: 6px;
+			color: var( --text );
+			font-family: inherit;
+			font-size: 14px;
+			outline: none;
+			transition: border-color 0.15s;
+		}
+
+		.search::placeholder {
+			color: var( --text-dim );
+		}
+
+		.search:focus {
+			border-color: var( --accent );
+		}
+
+		.controls__count {
+			font-size: 11px;
+			font-weight: 600;
+			letter-spacing: 0.5px;
+			text-transform: uppercase;
+			color: var( --text-dim );
+			white-space: nowrap;
+			flex-shrink: 0;
+		}
+
+		.controls__count span {
+			color: var( --accent );
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+			margin-top: 14px;
+		}
+
+		.chips__btn {
+			padding: 6px 13px;
+			background: var( --bg-row );
+			border: 1px solid var( --line );
+			border-radius: 20px;
+			color: var( --text-dim );
+			font-family: inherit;
+			font-size: 12px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: color 0.15s, background 0.15s, border-color 0.15s;
+		}
+
+		.chips__btn:hover {
+			color: var( --text );
+			border-color: var( --accent );
+		}
+
+		.chips__btn--active {
+			color: #14150f;
+			background: var( --accent );
+			border-color: var( --accent );
+		}
+
+		/* Grid */
+
+		.list {
+			padding: 20px var( --pad );
+		}
+
+		.recipes-grid {
+			display: grid;
+			grid-template-columns: repeat( auto-fill, minmax( 300px, 1fr ) );
+			gap: 14px;
+		}
+
+		/* Recipe Card */
+
+		.recipe-card {
+			background: var( --bg-row );
+			border: 1px solid var( --line );
+			border-radius: 6px;
+			padding: 14px 16px;
+			display: flex;
+			flex-direction: column;
+			gap: 9px;
+			transition: border-color 0.15s, background 0.15s;
+		}
+
+		.recipe-card:hover {
+			border-color: rgba( 174, 184, 154, 0.35 );
+			background: rgba( 28, 31, 26, 0.8 );
+		}
+
+		.recipe-card__meta {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 8px;
+			min-height: 14px;
+		}
+
+		.recipe-card__category {
+			font-size: 10px;
+			font-weight: 400;
+			letter-spacing: 0.5px;
+			text-transform: uppercase;
+			color: var( --text-dim );
+		}
+
+		.recipe-card__qty {
+			font-size: 10px;
+			color: var( --text-dim );
+		}
+
+		.recipe-card__result {
+			font-size: 14px;
+			font-weight: 600;
+			letter-spacing: 0.5px;
+			text-transform: uppercase;
+			color: var( --energy );
+		}
+
+		.recipe-card__formula {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 5px;
+		}
+
+		.ingredient {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+			background: rgba( 20, 22, 18, 0.6 );
+			border: 1px solid var( --line );
+			border-radius: 3px;
+			padding: 3px 7px;
+			font-size: 11px;
+			color: var( --text );
+		}
+
+		.ingredient__qty {
+			font-size: 10px;
+			font-weight: 700;
+			color: var( --accent );
+		}
+
+		.formula-sep {
+			font-size: 11px;
+			color: var( --text-dim );
+			flex-shrink: 0;
+		}
+
+		.formula-arrow {
+			font-size: 11px;
+			color: var( --accent );
+			flex-shrink: 0;
+		}
+
+		/* Empty */
+
+		.empty {
+			grid-column: 1 / -1;
+			padding: 60px 20px;
+			text-align: center;
+			color: var( --text-dim );
+			font-size: 14px;
+		}
+
+		/* Highlight */
+
+		mark {
+			background: rgba( 217, 164, 65, 0.25 );
+			color: var( --energy );
+			border-radius: 2px;
+			padding: 0 2px;
+		}
+
+		/* Responsive */
+
+		@media ( max-width: 767px ) {
+
+			:root {
+				--pad: 20px;
+			}
+
+			.recipes-grid {
+				grid-template-columns: 1fr;
+			}
+
+		}
+
+	</style>
+
+</head>
+<body>
+
+<div class="app">
+
+	<header class="app__header">
+
+		<div>
+			<img
+				class="logo"
+				src="assets/img/logo.png"
+				alt="DayZ"
+				width="2000"
+				height="895"
+			/>
+			<div class="app__sub" id="subtitle"></div>
+		</div>
+
+		<div class="lang" id="langSwitch">
+			<button class="lang__btn" data-lang="en">EN</button>
+			<button class="lang__btn" data-lang="de">DE</button>
+		</div>
+
+	</header><!-- end /.app__header -->
+
+	<div class="controls">
+
+		<div class="controls__card">
+
+			<div class="controls__top">
+
+				<input
+					type="text"
+					class="search"
+					id="searchInput"
+					autocomplete="off"
+					spellcheck="false"
+				/>
+
+				<div class="controls__count">
+					<span id="countVisible">0</span> / <span id="countTotal">0</span>
+				</div>
+
+			</div><!-- end /.controls__top -->
+
+			<div class="chips" id="chips"></div>
+
+		</div><!-- end /.controls__card -->
+
+	</div><!-- end /.controls -->
+
+	<div class="list">
+		<div class="recipes-grid" id="recipesGrid"></div>
+	</div><!-- end /.list -->
+
+</div><!-- end /.app -->
+
+<script>
+
+(function() {
+
+	'use strict';
+
+	// i18n
+
+	const I18N = {
+
+		en: {
+			subtitle:    'Crafting Guide · Build 1.26 – 1.27',
+			placeholder: 'Search recipes or ingredients…',
+			count:       'Recipes',
+			all:         'All',
+			categories: {
+				'Primal':           'Primal',
+				'Wooden Source':    'Wooden Source',
+				'Fire':             'Fire',
+				'Clothing':         'Clothing',
+				'Leather & Animal': 'Leather & Animal',
+				'Bags & Backpacks': 'Bags & Backpacks',
+				'Traps & Fishing':  'Traps & Fishing',
+				'Medical':          'Medical',
+				'Ghillie Suit':     'Ghillie Suit',
+				'Structures':       'Structures',
+				'Weapons':          'Weapons',
+				'Electricity':      'Electricity',
+				'Explosives':       'Explosives',
+				'Cooking':          'Cooking',
+				'Farming':          'Farming',
+			},
+		},
+
+		de: {
+			subtitle:    'Crafting Guide · Build 1.26 – 1.27',
+			placeholder: 'Rezept oder Zutat suchen…',
+			count:       'Rezepte',
+			all:         'Alle',
+			categories: {
+				'Primal':           'Urwerkzeug',
+				'Wooden Source':    'Holzquellen',
+				'Fire':             'Feuer',
+				'Clothing':         'Kleidung',
+				'Leather & Animal': 'Leder & Tiere',
+				'Bags & Backpacks': 'Taschen & Rucksäcke',
+				'Traps & Fishing':  'Fallen & Angeln',
+				'Medical':          'Medizin',
+				'Ghillie Suit':     'Ghillie-Anzug',
+				'Structures':       'Strukturen',
+				'Weapons':          'Waffen',
+				'Electricity':      'Elektrik',
+				'Explosives':       'Sprengstoff',
+				'Cooking':          'Kochen',
+				'Farming':          'Anbau',
+			},
+		},
+
+	};
+
+	// German item names (official DayZ in-game / wiki localization)
+	// Fallback to English if a string is not mapped
+
+	const ITEM_DE = {
+
+		// Tools & primal
+		'Stone':                'Stein',
+		'Boulder':              'Felsbrocken',
+		'Bones':                'Knochen',
+		'Bone':                 'Knochen',
+		'Knife':                'Messer',
+		'Hands':                'Hände',
+		'Pickaxe':              'Spitzhacke',
+		'Stone Knife':          'Steinmesser',
+		'Bone Knife':           'Knochenmesser',
+		'Stone / Bone Knife':   'Steinmesser / Knochenmesser',
+		'Improvised Spear':     'Improvisierter Speer',
+		'Hatchet':              'Beil',
+		'Hacksaw / Handsaw':    'Metallsäge / Handsäge',
+		'Pliers':               'Zange',
+
+		// Wood
+		'Big Tree':             'Großer Baum',
+		'Small Tree':           'Kleiner Baum',
+		'Small Bush':           'Kleiner Busch',
+		'Big Bush':             'Großer Busch',
+		'Broom':                'Besen',
+		'Tree Bark':            'Baumrinde',
+		'Wooden Log':           'Holzscheit',
+		'Firewood':             'Brennholz',
+		'Long Stick':           'Langer Stock',
+		'Long Sticks':          'Lange Stöcke',
+		'Short Stick':          'Kurzer Stock',
+		'Short Sticks':         'Kurze Stöcke',
+		'Sticks':               'Stöcke',
+		'Wooden Stick':         'Holzstock',
+		'Wooden Sticks':        'Holzstöcke',
+		'Short / Wooden Sticks': 'Kurze / Holzstöcke',
+		'Short / Long Stick':   'Kurzer / Langer Stock',
+		'Sharpened Stick':      'Angespitzter Stock',
+		'Hand Drill Kit':       'Handbohrer-Set',
+		'Planks':               'Holzbretter',
+		'Wooden Planks':        'Holzbretter',
+		'Improv. Bolt':         'Improvisierter Bolzen',
+		'Wooden Fishing Hook':  'Hölzerner Angelhaken',
+		'Improvised Cooking Stand': 'Improvisierter Kochständer',
+		'Long Stick + Firewood': 'Langer Stock + Brennholz',
+		'Long Stick + Short Sticks': 'Langer Stock + Kurze Stöcke',
+
+		// Fire
+		'Torch':                'Fackel',
+		'Rag / Bandages':       'Lumpen / Bandagen',
+		'Tree Bark / Rags / Bandages / Paper': 'Baumrinde / Lumpen / Bandagen / Papier',
+		'Fireplace':            'Feuerstelle',
+		'Large Stone':          'Großer Stein',
+		'Stone Ring':           'Steinring',
+		'Stone Oven':           'Steinofen',
+
+		// Clothing
+		'Clothes':              'Kleidung',
+		'Rag':                  'Lumpen',
+		'Rags':                 'Lumpen',
+		'Rope':                 'Seil',
+		'Rope Belt':            'Seilgürtel',
+		'Sewing Kit':           'Nähset',
+		'White Armband':        'Weiße Armbinde',
+		'Eye Patch':            'Augenklappe',
+		'Mouth Gag':            'Knebel',
+		'Face Wrapping':        'Gesichtswickel',
+		'Head Wrapping':        'Kopfwickel',
+		'Hands Wrapping':       'Handwickel',
+		'Feet Wrapping':        'Fußwickel',
+		'Torso Wrapping':       'Oberkörperwickel',
+		'Legs Wrapping':        'Beinwickel',
+		'Raincoat':             'Regenmantel',
+		'Color Armband':        'Farbige Armbinde',
+		'Flag':                 'Flagge',
+		'Flag Design Armband':  'Flaggen-Armbinde',
+
+		// Leather & animal
+		'Guts':                 'Innereien',
+		'Animal Pelt':          'Tierfell',
+		'Garden Lime':          'Gartenkalk',
+		'Tanned Leather':       'Gegerbtes Leder',
+		'Leather Sewing Kit':   'Leder-Nähset',
+		'Leather Sack':         'Ledersack',
+		'Bone Fishing Hook':    'Knochen-Angelhaken',
+		'Feathers':             'Federn',
+		'Improvised Feathered Bolt': 'Improvisierter Federbolzen',
+		'Survivor':             'Überlebender',
+		'Big Animal':           'Großes Tier',
+		'Chicken':              'Huhn',
+		'Wolf':                 'Wolf',
+		'Wild Boar':            'Wildschwein',
+		'Meat, Bones & Guts':   'Fleisch, Knochen & Innereien',
+		'Meat, Bones, Guts & Pelt': 'Fleisch, Knochen, Innereien & Fell',
+		'Meat, Bones & Feathers': 'Fleisch, Knochen & Federn',
+		'Meat, Bones, Guts, Pelt & Head': 'Fleisch, Knochen, Innereien, Fell & Kopf',
+
+		// Bags & backpacks
+		'Burlap Sack':          'Sackleinen',
+		'Courier Bag':          'Kuriertasche',
+		'Improvised Backpack':  'Improvisierter Rucksack',
+		'Boar Raw Pelt':        'Rohes Wildschweinfell',
+		'Fur Courier Bag':      'Fell-Kuriertasche',
+		'Fur Backpack':         'Fell-Rucksack',
+		'Drysack':              'Trockensack',
+		'Improvised Drysack Bag': 'Improvisierter Trockensack',
+
+		// Traps & fishing
+		'Metal Wire':           'Metalldraht',
+		'Netting':              'Netz',
+		'Snare Trap':           'Schlingenfalle',
+		'Trip Wire':            'Stolperdraht',
+		'Fishing Net Trap':     'Fischnetzfalle',
+		'Water Bottle':         'Wasserflasche',
+		'Fishing Bottle Trap':  'Flaschen-Fischfalle',
+		'Improvised Fishing Rod': 'Improvisierte Angel',
+		'Fishing Hook':         'Angelhaken',
+		'Hook':                 'Haken',
+		'Worm':                 'Wurm',
+		'Fishing Bait':         'Angelköder',
+
+		// Medical
+		'Saline Bag Kit':       'Kochsalzlösungs-Set',
+		'IV Start Kit':         'Infusions-Set',
+		'Saline Bag IV':        'Kochsalzlösung (Infusion)',
+		'Blood Bag Kit':        'Blutbeutel-Set',
+		'Blood Bag':            'Blutbeutel',
+		'Blood Bag IV':         'Blutbeutel (Infusion)',
+		'Rags / Bandages / Duct Tape': 'Lumpen / Bandagen / Klebeband',
+		'Improvised Splint':    'Improvisierte Schiene',
+		'Splint':               'Schiene',
+
+		// Ghillie
+		'Burlap Strip':         'Sackleinenstreifen',
+		'Burlap Strips':        'Sackleinenstreifen',
+		'Ghillie Rifle Wrap':   'Ghillie-Gewehrwickel',
+		'Ghillie Hood':         'Ghillie-Kapuze',
+		'Ghillie Shrug':        'Ghillie-Umhang (kurz)',
+		'Ghillie Cloak':        'Ghillie-Umhang',
+		'Ghillie Suit':         'Ghillie-Anzug',
+
+		// Structures
+		'Nails':                'Nägel',
+		'Wooden Crate':         'Holzkiste',
+		'Fence Kit':            'Zaun-Bausatz',
+		'Flag Pole Kit':        'Fahnenmast-Bausatz',
+		'Watchtower Kit':       'Wachturm-Bausatz',
+		'Shelter Kit':          'Unterstand-Bausatz',
+		'Tarp / Fabric':        'Plane / Stoff',
+		'Tarp/Fabric Shelter':  'Planen-/Stoff-Unterstand',
+		'Improvised Shelter':   'Improvisierter Unterstand',
+		'Leather Shelter':      'Leder-Unterstand',
+
+		// Weapons
+		'Baseball Bat':         'Baseballschläger',
+		'Nailed Bat':           'Nagelschläger',
+		'Barbed Wire':          'Stacheldraht',
+		'Barbed Bat':           'Stacheldraht-Schläger',
+		'Dust Mask':            'Staubmaske',
+		'Improv. Gas Mask Filter': 'Improvisierter Gasmaskenfilter',
+		'Duct Tape':            'Klebeband',
+		'Improv. Suppressor':   'Improvisierter Schalldämpfer',
+		'Assault Vest':         'Sturmweste',
+		'Utility Buttpack':     'Zusatztasche',
+		'Complete Assault Vest': 'Komplette Sturmweste',
+		'Assault Helmet':       'Sturmhelm',
+		'Visor':                'Visier',
+		'Complete Assault Helmet': 'Kompletter Sturmhelm',
+		'Plate Carrier':        'Plattenträger',
+		'Attachments':          'Anbauteile',
+		'Complete Plate Carrier': 'Kompletter Plattenträger',
+		'Chainmail Coil':       'Kettenhemd-Rolle',
+		'Witch Hood':           'Hexenkapuze',
+		'Armored Hood':         'Gepanzerte Kapuze',
+
+		// Electricity
+		'Battery (Car/Truck)':  'Batterie (Auto/LKW)',
+		'Battery + Cable Bridge': 'Batterie + Kabelbrücke',
+
+		// Explosives
+		'Plastic Explosive':    'Plastiksprengstoff',
+		'Remote Detonation Unit': 'Fernzündeinheit',
+		'Armed Plastic Explosive': 'Scharfer Plastiksprengstoff',
+		'Protective Case':      'Schutzkoffer',
+		'Electrical Repair Kit': 'Elektro-Reparaturset',
+		'Improvised Explosive': 'Improvisierter Sprengsatz',
+		'Armed Improv. Explosive': 'Scharfer improv. Sprengsatz',
+
+		// Cooking
+		'Gas Canister':         'Gaskartusche',
+		'Stove':                'Kocher',
+		'Pot / Pan':            'Topf / Pfanne',
+		'Cooking Device':       'Kochgerät',
+		'Lamp':                 'Lampe',
+		'Portable Gas Lamp':    'Tragbare Gaslampe',
+		'Gas Stove':            'Gaskocher',
+		'Frying Pan / Cooking Pot': 'Bratpfanne / Kochtopf',
+		'Portable Cooking Stove': 'Tragbarer Gaskocher',
+		'Blowtorch':            'Lötlampe',
+		'Blowtorch (fueled)':   'Lötlampe (befüllt)',
+
+		// Farming
+		'Pepper':               'Paprika',
+		'Pepper Seeds':         'Paprikasamen',
+		'Pumpkin':              'Kürbis',
+		'Pumpkin Seeds':        'Kürbissamen',
+		'Zucchini':             'Zucchini',
+		'Zucchini Seeds':       'Zucchinisamen',
+		'Tomato':               'Tomate',
+		'Tomato Seeds':         'Tomatensamen',
+		'Barrel':               'Fass',
+		'Fire Barrel':          'Feuerfass',
+
+	};
+
+	// Recipe data
+
+	const recipes = [
+
+		// Primal
+		{ category: 'Primal', result: 'Stone Knife', ingredients: [{ name: 'Stone', qty: 1 }, { name: 'Stone', qty: 1 }] },
+		{ category: 'Primal', result: 'Stone Knife', ingredients: [{ name: 'Stone', qty: 1 }, { name: 'Boulder', qty: 1 }] },
+		{ category: 'Primal', result: 'Bone Knife', ingredients: [{ name: 'Bones', qty: 2 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Primal', result: 'Bone Knife', ingredients: [{ name: 'Bones', qty: 1 }, { name: 'Boulder', qty: 1 }] },
+		{ category: 'Primal', result: 'Stone', ingredients: [{ name: 'Pickaxe', qty: 1 }, { name: 'Boulder', qty: 1 }] },
+		{ category: 'Primal', result: 'Improvised Spear', ingredients: [{ name: 'Long Stick', qty: 1 }, { name: 'Stone / Bone Knife', qty: 1 }] },
+
+		// Wooden Source
+		{ category: 'Wooden Source', result: 'Tree Bark', ingredients: [{ name: 'Big Tree', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Wooden Log', ingredients: [{ name: 'Big Tree', qty: 1 }, { name: 'Hatchet', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Hand Drill Kit', ingredients: [{ name: 'Tree Bark', qty: 1 }, { name: 'Short Stick', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Firewood', ingredients: [{ name: 'Wooden Log', qty: 1 }, { name: 'Hatchet', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Short Sticks', ingredients: [{ name: 'Small Bush', qty: 1 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Long Stick + Firewood', ingredients: [{ name: 'Small Tree', qty: 1 }, { name: 'Hatchet', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Long Stick + Short Sticks', ingredients: [{ name: 'Big Bush', qty: 1 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Short Sticks', ingredients: [{ name: 'Firewood', qty: 1 }, { name: 'Hatchet', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Long Stick + Short Sticks', ingredients: [{ name: 'Broom', qty: 1 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Sharpened Stick', ingredients: [{ name: 'Long Stick', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Improv. Bolt', ingredients: [{ name: 'Short Stick', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Planks', resultQty: 4, ingredients: [{ name: 'Wooden Log', qty: 1 }, { name: 'Hacksaw / Handsaw', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Wooden Fishing Hook', ingredients: [{ name: 'Short Stick', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Wooden Source', result: 'Improvised Cooking Stand', ingredients: [{ name: 'Long Stick', qty: 1 }, { name: 'Wooden Sticks', qty: 2 }] },
+
+		// Fire
+		{ category: 'Fire', result: 'Torch', ingredients: [{ name: 'Rag / Bandages', qty: 1 }, { name: 'Short / Long Stick', qty: 1 }] },
+		{ category: 'Fire', result: 'Fireplace', ingredients: [{ name: 'Tree Bark / Rags / Bandages / Paper', qty: 1 }, { name: 'Firewood', qty: 1 }] },
+		{ category: 'Fire', result: 'Stone Ring', ingredients: [{ name: 'Large Stone', qty: 8 }] },
+		{ category: 'Fire', result: 'Stone Oven', ingredients: [{ name: 'Large Stone', qty: 16 }] },
+
+		// Clothing
+		{ category: 'Clothing', result: 'Rags', ingredients: [{ name: 'Clothes', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Clothing', result: 'Rope', ingredients: [{ name: 'Rags', qty: 6 }] },
+		{ category: 'Clothing', result: 'Rope Belt', ingredients: [{ name: 'Rope', qty: 1 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'White Armband', ingredients: [{ name: 'Rag', qty: 1 }, { name: 'Sewing Kit', qty: 1 }] },
+		{ category: 'Clothing', result: 'White Armband', ingredients: [{ name: 'Rag', qty: 1 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Eye Patch', ingredients: [{ name: 'Rag', qty: 1 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Mouth Gag', ingredients: [{ name: 'Rag', qty: 1 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Face Wrapping', resultQty: 2, ingredients: [{ name: 'Rags', qty: 2 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Head Wrapping', resultQty: 2, ingredients: [{ name: 'Rags', qty: 2 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Hands Wrapping', resultQty: 2, ingredients: [{ name: 'Rags', qty: 2 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Feet Wrapping', resultQty: 2, ingredients: [{ name: 'Rags', qty: 2 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Torso Wrapping', resultQty: 6, ingredients: [{ name: 'Rags', qty: 6 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Legs Wrapping', resultQty: 6, ingredients: [{ name: 'Rags', qty: 6 }, { name: 'Hands', qty: 1 }] },
+		{ category: 'Clothing', result: 'Color Armband', resultQty: 5, ingredients: [{ name: 'Raincoat', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Clothing', result: 'Flag Design Armband', resultQty: 3, ingredients: [{ name: 'Flag', qty: 1 }, { name: 'Knife', qty: 1 }] },
+
+		// Leather & Animal
+		{ category: 'Leather & Animal', result: 'Rope', ingredients: [{ name: 'Guts', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Tanned Leather', resultQty: 4, ingredients: [{ name: 'Animal Pelt', qty: 1 }, { name: 'Garden Lime', qty: 4 }] },
+		{ category: 'Leather & Animal', result: 'Leather Sack', ingredients: [{ name: 'Tanned Leather', qty: 2 }, { name: 'Leather Sewing Kit', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Bone Fishing Hook', ingredients: [{ name: 'Bone', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Improvised Feathered Bolt', ingredients: [{ name: 'Improv. Bolt', qty: 1 }, { name: 'Feathers', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Meat, Bones & Guts', ingredients: [{ name: 'Survivor', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Meat, Bones, Guts & Pelt', ingredients: [{ name: 'Big Animal', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Meat, Bones & Feathers', ingredients: [{ name: 'Chicken', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Meat, Bones, Guts, Pelt & Head', ingredients: [{ name: 'Wolf', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Leather & Animal', result: 'Meat, Bones, Guts & Pelt', ingredients: [{ name: 'Wild Boar', qty: 1 }, { name: 'Knife', qty: 1 }] },
+
+		// Bags & Backpacks
+		{ category: 'Bags & Backpacks', result: 'Courier Bag', ingredients: [{ name: 'Burlap Sack', qty: 1 }, { name: 'Rope', qty: 1 }] },
+		{ category: 'Bags & Backpacks', result: 'Improvised Backpack', ingredients: [{ name: 'Courier Bag', qty: 1 }, { name: 'Short / Wooden Sticks', qty: 3 }] },
+		{ category: 'Bags & Backpacks', result: 'Fur Courier Bag', ingredients: [{ name: 'Boar Raw Pelt', qty: 1 }, { name: 'Rope', qty: 1 }] },
+		{ category: 'Bags & Backpacks', result: 'Fur Backpack', ingredients: [{ name: 'Fur Courier Bag', qty: 1 }, { name: 'Short / Wooden Sticks', qty: 3 }] },
+		{ category: 'Bags & Backpacks', result: 'Improvised Drysack Bag', ingredients: [{ name: 'Rope', qty: 1 }, { name: 'Drysack', qty: 1 }] },
+
+		// Traps & Fishing
+		{ category: 'Traps & Fishing', result: 'Snare Trap', ingredients: [{ name: 'Metal Wire', qty: 1 }, { name: 'Wooden Stick', qty: 1 }] },
+		{ category: 'Traps & Fishing', result: 'Trip Wire', ingredients: [{ name: 'Metal Wire', qty: 1 }, { name: 'Wooden Sticks', qty: 2 }] },
+		{ category: 'Traps & Fishing', result: 'Fishing Net Trap', ingredients: [{ name: 'Metal Wire', qty: 1 }, { name: 'Netting', qty: 2 }] },
+		{ category: 'Traps & Fishing', result: 'Fishing Bottle Trap', ingredients: [{ name: 'Water Bottle', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Traps & Fishing', result: 'Improvised Fishing Rod', ingredients: [{ name: 'Long Stick', qty: 1 }, { name: 'Rope', qty: 1 }] },
+		{ category: 'Traps & Fishing', result: 'Fishing Hook', ingredients: [{ name: 'Bones', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Traps & Fishing', result: 'Fishing Bait', ingredients: [{ name: 'Hook', qty: 1 }, { name: 'Worm', qty: 1 }] },
+
+		// Medical
+		{ category: 'Medical', result: 'Saline Bag IV', ingredients: [{ name: 'Saline Bag Kit', qty: 1 }, { name: 'IV Start Kit', qty: 1 }] },
+		{ category: 'Medical', result: 'Blood Bag', ingredients: [{ name: 'Blood Bag Kit', qty: 1 }, { name: 'Survivor', qty: 1 }] },
+		{ category: 'Medical', result: 'Blood Bag IV', ingredients: [{ name: 'Blood Bag', qty: 1 }, { name: 'IV Start Kit', qty: 1 }] },
+		{ category: 'Medical', result: 'Improvised Splint', resultQty: 2, ingredients: [{ name: 'Rags / Bandages / Duct Tape', qty: 4 }, { name: 'Wooden Sticks', qty: 2 }] },
+		{ category: 'Medical', result: 'Splint', ingredients: [{ name: 'Rags / Bandages / Duct Tape', qty: 2 }, { name: 'Short Sticks', qty: 2 }] },
+
+		// Ghillie Suit
+		{ category: 'Ghillie Suit', result: 'Burlap Strip', resultQty: 1, ingredients: [{ name: 'Burlap Sack', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Ghillie Suit', result: 'Ghillie Rifle Wrap', ingredients: [{ name: 'Netting', qty: 1 }, { name: 'Burlap Strips', qty: 2 }] },
+		{ category: 'Ghillie Suit', result: 'Ghillie Hood', ingredients: [{ name: 'Netting', qty: 1 }, { name: 'Burlap Strips', qty: 2 }] },
+		{ category: 'Ghillie Suit', result: 'Ghillie Shrug', ingredients: [{ name: 'Netting', qty: 2 }, { name: 'Burlap Strips', qty: 4 }] },
+		{ category: 'Ghillie Suit', result: 'Ghillie Cloak', ingredients: [{ name: 'Netting', qty: 3 }, { name: 'Burlap Strips', qty: 6 }] },
+		{ category: 'Ghillie Suit', result: 'Ghillie Suit', ingredients: [{ name: 'Netting', qty: 4 }, { name: 'Burlap Strips', qty: 10 }] },
+
+		// Structures
+		{ category: 'Structures', result: 'Wooden Crate', ingredients: [{ name: 'Wooden Planks', qty: 8 }, { name: 'Nails', qty: 16 }] },
+		{ category: 'Structures', result: 'Fence Kit', ingredients: [{ name: 'Wooden Sticks', qty: 2 }, { name: 'Rope', qty: 1 }] },
+		{ category: 'Structures', result: 'Flag Pole Kit', ingredients: [{ name: 'Wooden Sticks', qty: 4 }, { name: 'Rope', qty: 1 }] },
+		{ category: 'Structures', result: 'Watchtower Kit', ingredients: [{ name: 'Wooden Sticks', qty: 4 }, { name: 'Rope', qty: 1 }] },
+		{ category: 'Structures', result: 'Shelter Kit', ingredients: [{ name: 'Wooden Sticks', qty: 4 }, { name: 'Rope', qty: 1 }] },
+		{ category: 'Structures', result: 'Tarp/Fabric Shelter', ingredients: [{ name: 'Long Sticks', qty: 4 }, { name: 'Tarp / Fabric', qty: 4 }] },
+		{ category: 'Structures', result: 'Improvised Shelter', ingredients: [{ name: 'Long Sticks', qty: 4 }, { name: 'Sticks', qty: 50 }] },
+		{ category: 'Structures', result: 'Leather Shelter', ingredients: [{ name: 'Long Sticks', qty: 4 }, { name: 'Tanned Leather', qty: 8 }] },
+
+		// Weapons
+		{ category: 'Weapons', result: 'Nailed Bat', ingredients: [{ name: 'Baseball Bat', qty: 1 }, { name: 'Nails', qty: 12 }] },
+		{ category: 'Weapons', result: 'Barbed Bat', ingredients: [{ name: 'Baseball Bat', qty: 1 }, { name: 'Barbed Wire', qty: 1 }] },
+		{ category: 'Weapons', result: 'Improv. Gas Mask Filter', ingredients: [{ name: 'Water Bottle', qty: 1 }, { name: 'Dust Mask', qty: 1 }] },
+		{ category: 'Weapons', result: 'Improv. Suppressor', ingredients: [{ name: 'Water Bottle', qty: 1 }, { name: 'Duct Tape', qty: 1 }] },
+		{ category: 'Weapons', result: 'Complete Assault Vest', ingredients: [{ name: 'Assault Vest', qty: 1 }, { name: 'Utility Buttpack', qty: 1 }] },
+		{ category: 'Weapons', result: 'Complete Assault Helmet', ingredients: [{ name: 'Assault Helmet', qty: 1 }, { name: 'Visor', qty: 1 }] },
+		{ category: 'Weapons', result: 'Complete Plate Carrier', ingredients: [{ name: 'Plate Carrier', qty: 1 }, { name: 'Attachments', qty: 1 }] },
+		{ category: 'Weapons', result: 'Armored Hood', ingredients: [{ name: 'Chainmail Coil', qty: 1 }, { name: 'Witch Hood', qty: 1 }] },
+
+		// Electricity
+		{ category: 'Electricity', result: 'Metal Wire', ingredients: [{ name: 'Barbed Wire', qty: 1 }, { name: 'Pliers', qty: 1 }] },
+		{ category: 'Electricity', result: 'Battery + Cable Bridge', ingredients: [{ name: 'Battery (Car/Truck)', qty: 1 }, { name: 'Metal Wire', qty: 1 }] },
+
+		// Explosives
+		{ category: 'Explosives', result: 'Armed Plastic Explosive', ingredients: [{ name: 'Plastic Explosive', qty: 1 }, { name: 'Remote Detonation Unit', qty: 1 }] },
+		{ category: 'Explosives', result: 'Improvised Explosive', ingredients: [{ name: 'Protective Case', qty: 1 }, { name: 'Electrical Repair Kit', qty: 1 }] },
+		{ category: 'Explosives', result: 'Armed Improv. Explosive', ingredients: [{ name: 'Protective Case', qty: 1 }, { name: 'Remote Detonation Unit', qty: 1 }] },
+
+		// Cooking
+		{ category: 'Cooking', result: 'Cooking Device', ingredients: [{ name: 'Gas Canister', qty: 1 }, { name: 'Stove', qty: 1 }, { name: 'Pot / Pan', qty: 1 }] },
+		{ category: 'Cooking', result: 'Portable Gas Lamp', ingredients: [{ name: 'Gas Canister', qty: 1 }, { name: 'Lamp', qty: 1 }] },
+		{ category: 'Cooking', result: 'Portable Cooking Stove', ingredients: [{ name: 'Gas Stove', qty: 1 }, { name: 'Frying Pan / Cooking Pot', qty: 1 }, { name: 'Gas Canister', qty: 1 }] },
+		{ category: 'Cooking', result: 'Blowtorch (fueled)', ingredients: [{ name: 'Blowtorch', qty: 1 }, { name: 'Gas Canister', qty: 1 }] },
+
+		// Farming
+		{ category: 'Farming', result: 'Pepper Seeds', resultQty: 8, ingredients: [{ name: 'Pepper', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Farming', result: 'Pumpkin Seeds', resultQty: 12, ingredients: [{ name: 'Pumpkin', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Farming', result: 'Zucchini Seeds', ingredients: [{ name: 'Zucchini', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Farming', result: 'Tomato Seeds', resultQty: 5, ingredients: [{ name: 'Tomato', qty: 1 }, { name: 'Knife', qty: 1 }] },
+		{ category: 'Farming', result: 'Fire Barrel', ingredients: [{ name: 'Barrel', qty: 1 }, { name: 'Knife', qty: 1 }] },
+
+	];
+
+	// State
+
+	const state = {
+		lang:     detectLang(),
+		category: 'All',
+		query:    '',
+	};
+
+	// DOM refs
+
+	const grid        = document.getElementById( 'recipesGrid' );
+	const chipsEl     = document.getElementById( 'chips' );
+	const searchInput = document.getElementById( 'searchInput' );
+	const subtitleEl  = document.getElementById( 'subtitle' );
+	const countVis    = document.getElementById( 'countVisible' );
+	const countTotal  = document.getElementById( 'countTotal' );
+	const langSwitch  = document.getElementById( 'langSwitch' );
+
+	const allCategories = [ 'All', ...[ ...new Set( recipes.map( r => r.category ) ) ] ];
+
+	countTotal.textContent = recipes.length;
+
+	// Detect browser language
+
+	function detectLang() {
+
+		const lang = ( navigator.language || 'en' ).slice( 0, 2 ).toLowerCase();
+		return lang === 'de' ? 'de' : 'en';
+
+	}
+
+	// Apply language to UI
+
+	function applyLang() {
+
+		const t = I18N[ state.lang ];
+
+		subtitleEl.textContent  = t.subtitle;
+		searchInput.placeholder = t.placeholder;
+
+		// Lang buttons
+		langSwitch.querySelectorAll( '.lang__btn' ).forEach( btn => {
+			btn.classList.toggle( 'lang__btn--active', btn.dataset.lang === state.lang );
+		});
+
+		// Rebuild chips with translated labels
+		buildChips();
+		render();
+
+	}
+
+	// Build category chips
+
+	function buildChips() {
+
+		const t = I18N[ state.lang ];
+		chipsEl.innerHTML = '';
+
+		allCategories.forEach( cat => {
+
+			const label = cat === 'All' ? t.all : ( t.categories[ cat ] || cat );
+			const btn = document.createElement( 'button' );
+
+			btn.className = 'chips__btn' + ( cat === state.category ? ' chips__btn--active' : '' );
+			btn.textContent = label;
+			btn.dataset.cat = cat;
+
+			btn.addEventListener( 'click', () => {
+
+				state.category = cat;
+				chipsEl.querySelectorAll( '.chips__btn' ).forEach( b => b.classList.remove( 'chips__btn--active' ) );
+				btn.classList.add( 'chips__btn--active' );
+				render();
+
+			});
+
+			chipsEl.appendChild( btn );
+
+		});
+
+	}
+
+	// Translate item name to active language
+
+	function tItem( name ) {
+
+		if ( state.lang !== 'de' ) return name;
+		return ITEM_DE[ name ] || name; // fallback = English
+
+	}
+
+	// Highlight
+
+	function highlight( text, query ) {
+
+		if ( ! query ) return text;
+
+		const escaped = query.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
+		return text.replace( new RegExp( `(${escaped})`, 'gi' ), '<mark>$1</mark>' );
+
+	}
+
+	// Filter
+
+	function getFiltered() {
+
+		const q = state.query.toLowerCase().trim();
+
+		return recipes.filter( recipe => {
+
+			const matchCat = state.category === 'All' || recipe.category === state.category;
+
+			if ( ! matchCat ) return false;
+
+			if ( ! q ) return true;
+
+			const inResult      = recipe.result.toLowerCase().includes( q ) || tItem( recipe.result ).toLowerCase().includes( q );
+			const inIngredients = recipe.ingredients.some( i => i.name.toLowerCase().includes( q ) || tItem( i.name ).toLowerCase().includes( q ) );
+
+			return inResult || inIngredients;
+
+		});
+
+	}
+
+	// Render
+
+	function render() {
+
+		const filtered = getFiltered();
+		const q = state.query.trim();
+		const t = I18N[ state.lang ];
+
+		countVis.textContent = filtered.length;
+		grid.innerHTML = '';
+
+		if ( filtered.length === 0 ) {
+
+			const empty = document.createElement( 'div' );
+			empty.className = 'empty';
+			empty.textContent = t.lang === 'de'
+				? `Keine Rezepte für „${q}" gefunden.`
+				: `No recipes found for "${q}".`;
+			grid.appendChild( empty );
+			return;
+
+		}
+
+		filtered.forEach( recipe => {
+
+			const card = document.createElement( 'div' );
+			card.className = 'recipe-card';
+
+			const catLabel = state.category === 'All'
+				? ( I18N[ state.lang ].categories[ recipe.category ] || recipe.category )
+				: '';
+
+			const qtyHtml = recipe.resultQty
+				? `<span class="recipe-card__qty">×${recipe.resultQty}</span>`
+				: '';
+
+			const formulaHtml = recipe.ingredients.map( ( ing, idx ) => {
+
+				const plus = idx < recipe.ingredients.length - 1
+					? '<span class="formula-sep">+</span>'
+					: '';
+
+				const ingQty = ing.qty > 1
+					? `<span class="ingredient__qty">${ing.qty}×</span>`
+					: '';
+
+				return `<span class="ingredient">${ingQty}${highlight( tItem( ing.name ), q )}</span>${plus}`;
+
+			}).join( '' );
+
+			card.innerHTML = `
+				<div class="recipe-card__meta">
+					<span class="recipe-card__category">${catLabel}</span>
+					${qtyHtml}
+				</div>
+				<div class="recipe-card__result">${highlight( tItem( recipe.result ), q )}</div>
+				<div class="recipe-card__formula">
+					${formulaHtml}
+					<span class="formula-arrow">→</span>
+					<span class="ingredient">${highlight( tItem( recipe.result ), q )}</span>
+				</div>
+			`;
+
+			grid.appendChild( card );
+
+		});
+
+	}
+
+	// Events
+
+	searchInput.addEventListener( 'input', () => {
+
+		state.query = searchInput.value;
+		render();
+
+	});
+
+	langSwitch.addEventListener( 'click', ( e ) => {
+
+		const btn = e.target.closest( '.lang__btn' );
+		if ( ! btn ) return;
+
+		state.lang = btn.dataset.lang;
+		document.documentElement.lang = state.lang;
+		applyLang();
+
+	});
+
+	// Init
+
+	applyLang();
+
+})();
+
+</script>
+
+</body>
+</html>
