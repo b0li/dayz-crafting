@@ -480,6 +480,7 @@
 	const I18N = {
 
 		en: {
+			title:       'DayZ Crafting Guide',
 			subtitle:    'Crafting Guide · Build 1.26 – 1.27',
 			placeholder: 'Search recipes or ingredients…',
 			count:       'Recipes',
@@ -504,6 +505,7 @@
 		},
 
 		de: {
+			title:       'DayZ Crafting-Guide',
 			subtitle:    'Crafting Guide · Build 1.26 – 1.27',
 			placeholder: 'Rezept oder Zutat suchen…',
 			count:       'Rezepte',
@@ -921,7 +923,8 @@
 
 		const t = I18N[ state.lang ];
 
-		subtitleEl.textContent  = t.subtitle;
+		document.title         = t.title;
+		subtitleEl.textContent = t.subtitle;
 		searchInput.placeholder = t.placeholder;
 
 		// Lang buttons
