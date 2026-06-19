@@ -228,7 +228,7 @@
 
 		.recipes-grid {
 			display: grid;
-			grid-template-columns: repeat( auto-fill, minmax( 300px, 1fr ) );
+			grid-template-columns: repeat( auto-fill, minmax( 420px, 1fr ) );
 			gap: 14px;
 		}
 
@@ -290,12 +290,20 @@
 			display: inline-flex;
 			align-items: center;
 			gap: 4px;
+			min-height: 34px;
 			background: rgba( 20, 22, 18, 0.6 );
 			border: 1px solid var( --line );
 			border-radius: 3px;
 			padding: 3px 7px;
 			font-size: 11px;
 			color: var( --text );
+		}
+
+		.ingredient__img {
+			width: 26px;
+			height: 26px;
+			object-fit: contain;
+			flex-shrink: 0;
 		}
 
 		.ingredient__qty {
@@ -324,6 +332,16 @@
 			text-align: center;
 			color: var( --text-dim );
 			font-size: 14px;
+		}
+
+		/* Footer */
+
+		.footer {
+			padding: 24px var( --pad ) 32px;
+			font-size: 11px;
+			line-height: 1.6;
+			color: var( --text-dim );
+			text-align: center;
 		}
 
 		/* Highlight */
@@ -440,6 +458,11 @@
 	<div class="list">
 		<div class="recipes-grid" id="recipesGrid"></div>
 	</div><!-- end /.list -->
+
+	<footer class="footer">
+		Recipe data &amp; item icons from DayZ © Bohemia Interactive — fan project, not affiliated.
+		Icons via the DayZ Wiki &amp; bamboogaming.net.
+	</footer><!-- end /.footer -->
 
 </div><!-- end /.app -->
 
@@ -748,6 +771,172 @@
 
 	};
 
+	// Item icons – maps an item string to a file in assets/img/items/.
+	// Items without an entry render text-only (graceful fallback).
+
+	const ITEM_IMG = {
+
+		// Primal / tools
+		'Stone':                    'stone.webp',
+		'Boulder':                  'stone.webp',
+		'Large Stone':              'stone.webp',
+		'Stone Knife':              'stone-knife.webp',
+		'Bone Knife':               'bone-knife.webp',
+		'Stone / Bone Knife':       'stone-knife.webp',
+		'Knife':                    'knife.webp',
+		'Bones':                    'bones.webp',
+		'Bone':                     'bones.webp',
+		'Pickaxe':                  'pickaxe.webp',
+		'Improvised Spear':         'improvised-spear.webp',
+		'Hacksaw / Handsaw':        'hacksaw.webp',
+		'Pliers':                   'pliers.webp',
+
+		// Wood
+		'Tree Bark':                'tree-bark.webp',
+		'Wooden Log':               'wooden-log.webp',
+		'Hatchet':                  'hatchet.webp',
+		'Firewood':                 'firewood.webp',
+		'Broom':                    'broom.webp',
+		'Hand Drill Kit':           'hand-drill-kit.webp',
+		'Long Stick':               'long-stick.webp',
+		'Long Sticks':              'long-stick.webp',
+		'Short Stick':              'stick.webp',
+		'Short Sticks':             'stick.webp',
+		'Wooden Stick':             'stick.webp',
+		'Wooden Sticks':            'stick.webp',
+		'Sticks':                   'stick.webp',
+		'Short / Long Stick':       'stick.webp',
+		'Short / Wooden Sticks':    'stick.webp',
+		'Sharpened Stick':          'sharpened-stick.webp',
+		'Improv. Bolt':             'improv-bolt.webp',
+		'Improvised Feathered Bolt':'improv-bolt.webp',
+		'Wooden Fishing Hook':      'wooden-fishing-hook.webp',
+		'Improvised Cooking Stand': 'cooking-stand.webp',
+		'Planks':                   'planks.webp',
+		'Wooden Planks':            'planks.webp',
+
+		// Fire
+		'Torch':                    'torch.webp',
+		'Fireplace':                'fireplace.webp',
+		'Stone Ring':               'stone-ring.webp',
+		'Stone Oven':               'stone-oven.webp',
+
+		// Clothing
+		'Clothes':                  'clothes.webp',
+		'Rag':                      'rags.webp',
+		'Rags':                     'rags.webp',
+		'Rope':                     'rope.webp',
+		'Rope Belt':                'rope-belt.webp',
+		'Sewing Kit':               'sewing-kit.webp',
+		'White Armband':            'armband-white.webp',
+		'Color Armband':            'armband-color.webp',
+		'Head Wrapping':            'head-wrapping.webp',
+		'Hands Wrapping':           'hands-wrapping.webp',
+		'Torso Wrapping':           'torso-wrapping.webp',
+		'Raincoat':                 'raincoat.webp',
+
+		// Leather & animal
+		'Guts':                     'guts.webp',
+		'Animal Pelt':              'animal-pelt.webp',
+		'Boar Raw Pelt':            'boar-raw-pelt.webp',
+		'Garden Lime':              'garden-lime.webp',
+		'Tanned Leather':           'tanned-leather.webp',
+		'Leather Sewing Kit':       'leather-sewing-kit.webp',
+		'Leather Sack':             'leather-sack.webp',
+		'Bone Fishing Hook':        'bone-fishing-hook.webp',
+		'Feathers':                 'feathers.webp',
+
+		// Bags & backpacks
+		'Burlap Sack':              'burlap-sack.webp',
+		'Courier Bag':              'courier-bag.webp',
+		'Improvised Backpack':      'improvised-backpack.webp',
+		'Fur Courier Bag':          'fur-courier-bag.webp',
+		'Fur Backpack':             'fur-backpack.webp',
+		'Drysack':                  'drysack.webp',
+		'Improvised Drysack Bag':   'drysack-bag.webp',
+
+		// Traps & fishing
+		'Metal Wire':               'metal-wire.webp',
+		'Netting':                  'netting.webp',
+		'Snare Trap':               'snare-trap.webp',
+		'Trip Wire':                'trip-wire.webp',
+		'Fishing Net Trap':         'fishing-net-trap.webp',
+		'Fishing Bottle Trap':      'fishing-bottle-trap.webp',
+		'Water Bottle':             'water-bottle.webp',
+		'Improvised Fishing Rod':   'fishing-rod.webp',
+		'Fishing Hook':             'fishing-hook.webp',
+		'Hook':                     'fishing-hook.webp',
+		'Fishing Bait':             'fishing-bait.webp',
+
+		// Medical
+		'Saline Bag Kit':           'saline-bag.webp',
+		'Saline Bag IV':            'saline-bag.webp',
+		'IV Start Kit':             'iv-start-kit.webp',
+		'Blood Bag Kit':            'blood-bag.webp',
+		'Blood Bag':                'blood-bag.webp',
+		'Blood Bag IV':             'blood-bag-iv.webp',
+		'Splint':                   'splint.webp',
+		'Improvised Splint':        'splint.webp',
+
+		// Ghillie
+		'Burlap Strip':             'burlap-strips.webp',
+		'Burlap Strips':            'burlap-strips.webp',
+		'Ghillie Rifle Wrap':       'ghillie-rifle-wrap.webp',
+		'Ghillie Hood':             'ghillie-hood.webp',
+		'Ghillie Shrug':            'ghillie-shrug.webp',
+		'Ghillie Cloak':            'ghillie-cloak.webp',
+		'Ghillie Suit':             'ghillie-suit.webp',
+
+		// Structures
+		'Nails':                    'nails.webp',
+		'Wooden Crate':             'wooden-crate.webp',
+		'Watchtower Kit':           'watchtower.webp',
+		'Shelter Kit':              'shelter-kit.webp',
+		'Tarp / Fabric':            'tarp-fabric.webp',
+		'Tarp/Fabric Shelter':      'tarp-fabric-shelter.webp',
+		'Improvised Shelter':       'improvised-shelter.webp',
+		'Leather Shelter':          'leather-shelter.webp',
+
+		// Weapons & attachments
+		'Nailed Bat':               'nailed-bat.webp',
+		'Barbed Wire':              'barbed-wire.webp',
+		'Improv. Gas Mask Filter':  'gas-mask-filter.webp',
+		'Improv. Suppressor':       'suppressor.webp',
+		'Dust Mask':                'dust-mask.webp',
+		'Duct Tape':                'duct-tape.webp',
+
+		// Explosives
+		'Plastic Explosive':        'plastic-explosive.webp',
+		'Armed Plastic Explosive':  'armed-plastic-explosive.webp',
+		'Remote Detonation Unit':   'remote-detonation-unit.webp',
+		'Improvised Explosive':     'improvised-explosive.webp',
+		'Armed Improv. Explosive':  'armed-improvised-explosive.webp',
+		'Protective Case':          'protective-case.webp',
+		'Electrical Repair Kit':    'electrical-repair-kit.webp',
+
+		// Cooking
+		'Gas Canister':             'gas-canister.webp',
+		'Gas Stove':                'gas-stove.webp',
+		'Stove':                    'gas-stove.webp',
+		'Pot / Pan':                'cooking-pot.webp',
+		'Frying Pan / Cooking Pot': 'cooking-pot.webp',
+		'Portable Gas Lamp':        'portable-gas-lamp.webp',
+		'Portable Cooking Stove':   'portable-cooking-stove.webp',
+		'Blowtorch':                'blowtorch.webp',
+
+		// Farming
+		'Pepper Seeds':             'pepper-seeds.webp',
+		'Pumpkin Seeds':            'pumpkin-seeds.webp',
+		'Zucchini Seeds':           'zucchini-seeds.webp',
+		'Tomato':                   'tomato.webp',
+		'Tomato Seeds':             'tomato-seeds.webp',
+		'Barrel':                   'fire-barrel.webp',
+		'Fire Barrel':              'fire-barrel.webp',
+
+	};
+
+	const IMG_BASE = 'assets/img/items/';
+
 	// Recipe data
 
 	const recipes = [
@@ -978,6 +1167,17 @@
 
 	}
 
+	// Icon markup for an item, or empty string if none mapped
+
+	function imgFor( name ) {
+
+		const file = ITEM_IMG[ name ];
+		if ( ! file ) return '';
+
+		return `<img class="ingredient__img" src="${IMG_BASE}${file}" alt="" loading="lazy">`;
+
+	}
+
 	// Highlight
 
 	function highlight( text, query ) {
@@ -1058,7 +1258,7 @@
 					? `<span class="ingredient__qty">${ing.qty}×</span>`
 					: '';
 
-				return `<span class="ingredient">${ingQty}<span class="ingredient__name">${highlight( tItem( ing.name ), q )}</span></span>${plus}`;
+				return `<span class="ingredient">${imgFor( ing.name )}${ingQty}<span class="ingredient__name">${highlight( tItem( ing.name ), q )}</span></span>${plus}`;
 
 			}).join( '' );
 
@@ -1071,7 +1271,7 @@
 				<div class="recipe-card__formula">
 					${formulaHtml}
 					<span class="formula-arrow">→</span>
-					<span class="ingredient"><span class="ingredient__name">${highlight( tItem( recipe.result ), q )}</span></span>
+					<span class="ingredient">${imgFor( recipe.result )}<span class="ingredient__name">${highlight( tItem( recipe.result ), q )}</span></span>
 				</div>
 			`;
 

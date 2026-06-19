@@ -155,6 +155,34 @@ Drei Ebenen, alle im `<script>` von `index.html`:
 
 ---
 
+## Item-Icons
+
+Analog zu `ITEM_DE` eine zentrale Map **`ITEM_IMG`** (Item-String → Dateiname),
+plus `IMG_BASE = 'assets/img/items/'`. Helper **`imgFor( name )`** rendert ein
+`<img class="ingredient__img">` oder `''` (Fallback) – Items ohne Eintrag bleiben
+Text-only, nichts bricht. Aufgerufen in `render()` für `recipe.result` und jede
+Zutat.
+
+- **Format:** WebP mit Alpha, nicht-quadratisch ok (`object-fit: contain` in
+  26×26-Box). Chips haben `min-height: 34px` → einheitliche Höhe mit/ohne Icon.
+- **Dateien:** `assets/img/items/*.webp`, kebab-case (`stone-knife.webp`).
+- **Quelle:** überwiegend bamboogaming.net (einheitlicher Satz), Rest DayZ Wiki.
+  Download-URL-Muster Bamboo: `https://www.bamboogaming.net/images/dayz/<Name>.png.webp`.
+- **Abdeckung:** ~72 % der Items. Bewusst NICHT bebildert: abstrakte Strings
+  (`Hands`, `Survivor`, `Meat, …`-Kombis, Slash-/Plus-Kombinationen) und von der
+  Quelle nicht geführte Items (Rüstung/Attachments, einige Tiere/Pflanzen).
+
+### Neues Icon hinzufügen
+
+1. WebP nach `assets/img/items/` legen (kebab-case).
+2. Eintrag in `ITEM_IMG` setzen: `'Item Name': 'datei.webp'`.
+3. `CACHE_NAME` in `sw.js` hochzählen (sonst alter Cache).
+
+> Coverage prüfen: Node-Snippet vergleicht `recipes`-Items gegen `ITEM_IMG`-Keys
+> (siehe Commit-Historie / im Zweifel neu schreiben).
+
+---
+
 ## PWA
 
 ### Meta-Tags (index.html)
