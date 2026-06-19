@@ -55,21 +55,39 @@ body {
 | Kategorie (Card) | 10px | 400 | --text-dim | uppercase |
 | Zutat / Ingredient | 11px | 400 | --text | Chip mit Border |
 | Menge (Ingredient) | 10px | 700 | --accent | z. B. `2×` |
-| Chip / Filter-Button | 12px | 600 | --text-dim | aktiv: bg --accent |
-| Sprachswitch | 12px | 700 | --text-dim | aktiv: bg --accent |
+| Chip / Filter-Button | 12px | 600 | --text-dim | hover + aktiv: bg --accent, Text dunkel (#14150f) |
+| Sprachswitch | 12px | 700 | --text-dim | aktiv: bg --accent, Text dunkel |
 
 ---
 
 ## Layout
 
 - **Max-width:** 1400px, zentriert (`.app`)
-- **Padding:** `--pad` (32px), responsiv 20px unter 768px
+- **Padding:** `--pad` – Desktop 32px, **< 768px → 12px** (per Media-Query überschrieben)
 - **Header** (`.app__header`): Logo links + DE/EN-Sprachswitch rechts, keine Trennlinie
 - **Controls** (`.controls`): sticky `top: 0`, klebt beim Scrollen ohne Gap am Viewport-Rand
   - Innen `.controls__card` – Suche + Zähler + Filter-Chips als eigene Card (Border + Radius), bündig mit den Rezept-Cards
   - Padding `0 var(--pad) 14px` (Abstand sitzt UNTER der Card, nicht darüber)
 - **Grid** (`.recipes-grid`): `repeat( auto-fill, minmax( 300px, 1fr ) )`, gap 14px, < 768px einspaltig
-- **Filter-Chips:** `flex-wrap`, gap 10px – konsistent mit Card-Gap
+- **Safe-area insets** (`@supports env()`): Header bekommt `safe-area-inset-top`,
+  `.list` `safe-area-inset-bottom` (Notch / Home-Indicator auf iOS)
+
+### Filter-Chips – responsives Verhalten
+
+- **Desktop:** `flex-wrap: wrap`, gap 10px – Chips brechen über mehrere Zeilen um
+- **Mobile (< 768px):** CSS-only horizontaler Swipe statt Umbruch, damit das
+  sticky Filter-Menü flach bleibt:
+  ```css
+  .chips {
+  	flex-wrap: nowrap;
+  	overflow-x: auto;
+  	scroll-snap-type: x proximity;
+  	scrollbar-width: none;        /* + ::-webkit-scrollbar { display:none } */
+  }
+  .chips__btn { flex-shrink: 0; scroll-snap-align: start; }
+  ```
+  Kein JS – reines Overflow-Scrolling mit Snap. Chips sind bündig zum Suchfeld
+  (kein Edge-Bleed).
 
 > **Wichtig:** `.recipe-card__meta` hat `min-height: 14px`, damit Cards ohne
 > Mengenangabe (z. B. „Zucchini Seeds") trotzdem bündig zu Cards MIT Mengenangabe
@@ -115,7 +133,9 @@ Aktuell **102 Rezepte**.
 
 Drei Ebenen, alle im `<script>` von `index.html`:
 
-1. **`I18N[ lang ]`** – UI-Texte (subtitle, placeholder, count) + Kategorie-Labels
+1. **`I18N[ lang ]`** – UI-Texte (title, subtitle, placeholder, count) + Kategorie-Labels
+   - `title` wird in `applyLang()` auch auf `document.title` gesetzt → Browser-Tab
+     wechselt beim Sprachwechsel mit (`DayZ Crafting Guide` / `DayZ Crafting-Guide`)
 2. **`ITEM_DE`** – zentrales Dictionary `EN-Item → DE-Item` (~180 Einträge,
    offizielle DayZ-In-Game-/Wiki-Namen). DRY: Items wie *Knife*, *Rope*, *Stone*
    kommen dutzendfach vor, werden aber nur einmal gemappt.

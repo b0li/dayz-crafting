@@ -784,7 +784,7 @@
 
 		// Clothing
 		{ category: 'Clothing', result: 'Rags', ingredients: [{ name: 'Clothes', qty: 1 }, { name: 'Knife', qty: 1 }] },
-		{ category: 'Clothing', result: 'Rope', ingredients: [{ name: 'Rags', qty: 6 }] },
+		{ category: 'Clothing', result: 'Rope', ingredients: [{ name: 'Rags', qty: 12 }] },
 		{ category: 'Clothing', result: 'Rope Belt', ingredients: [{ name: 'Rope', qty: 1 }, { name: 'Hands', qty: 1 }] },
 		{ category: 'Clothing', result: 'White Armband', ingredients: [{ name: 'Rag', qty: 1 }, { name: 'Sewing Kit', qty: 1 }] },
 		{ category: 'Clothing', result: 'White Armband', ingredients: [{ name: 'Rag', qty: 1 }, { name: 'Hands', qty: 1 }] },
@@ -1058,7 +1058,7 @@
 					? `<span class="ingredient__qty">${ing.qty}×</span>`
 					: '';
 
-				return `<span class="ingredient">${ingQty}${highlight( tItem( ing.name ), q )}</span>${plus}`;
+				return `<span class="ingredient">${ingQty}<span class="ingredient__name">${highlight( tItem( ing.name ), q )}</span></span>${plus}`;
 
 			}).join( '' );
 
@@ -1071,7 +1071,7 @@
 				<div class="recipe-card__formula">
 					${formulaHtml}
 					<span class="formula-arrow">→</span>
-					<span class="ingredient">${highlight( tItem( recipe.result ), q )}</span>
+					<span class="ingredient"><span class="ingredient__name">${highlight( tItem( recipe.result ), q )}</span></span>
 				</div>
 			`;
 
